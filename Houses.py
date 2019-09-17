@@ -51,7 +51,7 @@ class Table:
         growth = float(data[len(data) - 1]) - float(data[0])
 
         return round(growth, 2)
-
+    
     # only works beyond 1970 (annual change data missing <1970)
     def compare_regions_price_growth(self, year, region1, region2):
         region1_growth = self.regions_price_growth(year, region1)
@@ -62,8 +62,24 @@ class Table:
 
         else:
             return [region2, region2_growth]
+        
+    def highest_growing_region_in_year(self, year):
+        # find all regions in year
+        regions = []
 
+        for record in self.data:
+            if record[1] not in regions:
+                regions.append(record[1])
 
+        regional_growth = []
+        for region in regions:
+            regional_growth.append(int(self.regions_price_growth(year, region)))
+
+        best_region_index = regional_growth.index(max(regional_growth))
+
+        return regions[best_region_index]    
+      
+        
 House_Prices = Table(db)
 
 # GUI
